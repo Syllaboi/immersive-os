@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-echo ">>> Unpacking project files..."
-tar -xzvf deploy.tar.gz
 
 echo ">>> Checking for Docker..."
 if ! command -v docker &> /dev/null; then
