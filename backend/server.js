@@ -127,6 +127,7 @@ app.post('/api/profiles/:id/start', async (req, res) => {
               'androidboot.redroid_dpi=320'
             ],
             HostConfig: {
+              Memory: 1536 * 1024 * 1024, // 1.5GB memory limit
               Binds: [
                 `${dataPath}:/data`, // Persist Android data
                 '/dev/binderfs:/dev/binderfs' // Required for Ubuntu 24.04
