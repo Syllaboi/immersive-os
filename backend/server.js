@@ -116,13 +116,21 @@ app.post('/api/profiles/:id/start', async (req, res) => {
         }
 
         if (!containerInfo) {
-          // Create container if it doesn't exist
           container = await docker.createContainer({
             Image: 'redroid/redroid:11.0.0-latest', // Using Android 11 for lower memory footprint
             name: containerName,
             Privileged: true,
+            Cmd: [
+              'androidboot.use_memfd=1',
+              'androidboot.redroid_width=720',
+              'androidboot.redroid_height=1280',
+              'androidboot.redroid_dpi=320'
+            ],
             HostConfig: {
-              Binds: [`${dataPath}:/data`], // Persist Android data
+              Binds: [
+                `${dataPath}:/data`, // Persist Android data
+                '/dev/binderfs:/dev/binderfs' // Required for Ubuntu 24.04
+              ],
               NetworkMode: 'backend_default' // Attach to docker-compose network
             }
           });
