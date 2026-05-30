@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - ./profiles:/app/profiles
+      - ../android-tracker/app/build/outputs/apk/debug/app-debug.apk:/app/app-debug.apk
+    restart: unless-stopped
+    environment:
+      - PORT=3001
+      - WS_SCRCPY_URL=http://localhost:8000
+    depends_on:
+      - ws-scrcpy
+
+  ws-scrcpy:
+    image: scavin/ws-scrcpy
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - ./adb:/root/.android
